@@ -1,20 +1,24 @@
-PG Management System - Backend API
+# PG Management System - Backend API
 This repository contains the complete backend API for a multi-tenant SaaS (Software as a Service) application designed to help Paying Guest (PG) owners manage their properties, tenants, payments, and expenses efficiently.
+
 
 This project was built from the ground up using Node.js, Express, and MongoDB, with a focus on creating a secure, scalable, and professional-grade REST API.
 
-Live API
+
+** Live API
+
 The API is deployed and live on Render. You can interact with it using the base URL below:
 
-Base URL: https://your-pg-api-name.onrender.com
+Base URL: https://pg-management-api.onrender.com/
 
 API Documentation
 Complete and interactive API documentation has been created and published using Postman. It details all available endpoints, required parameters, and example responses.
 
-View the Documentation: https://documenter.getpostman.com/view/your-collection-id/your-docs-id
+View the Documentation: [https://documenter.getpostman.com/view/your-collection-id/your-docs-id](https://web.postman.co/workspace/a746792c-1425-41a0-8881-d2644259b1eb/collection/30314560-03ed8745-81e5-4a54-96d2-9d20600655f8?action=share&source=copy-link&creator=30314560)
 
 Key Features
-Secure Authentication: Full user registration and login functionality using JSON Web Tokens (JWT) for secure, stateless authentication.
+Secure Authentication: 
+Full user registration and login functionality using JSON Web Tokens (JWT) for secure, stateless authentication.
 
 Multi-Tenancy: A robust data model that ensures complete data isolation between different PG Owners (tenants). A user can only ever access data that belongs to their own organization.
 
