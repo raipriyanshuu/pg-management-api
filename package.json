@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cross-env MONGO_URI=mongodb://localhost:27017/pg-management-test-db jest --testTimeout=10000 --runInBand"
   },
   "keywords": [],
   "author": "",
@@ -17,5 +17,9 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.1"
+  },
+  "devDependencies": {
+    "jest": "^30.1.3",
+    "supertest": "^7.1.4"
   }
 }
