@@ -1,22 +1,18 @@
 name: Node.js CI
+
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    # --- THIS IS THE NEW SECTION ---
-    # This block tells GitHub Actions to start up other Docker containers
-    # that our job can use.
+
     services:
-      # We are defining a service named 'mongodb'.
       mongodb:
-        # We tell it to use the official 'mongo' image from Docker Hub.
         image: mongo:latest
-        # This maps the container's internal port 27017 to a port on the
-        # host machine, making it accessible to our tests.
         ports:
           - 27017:27017
 
@@ -37,7 +33,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Now, when this step runs, a MongoDB instance will be running
-      # at localhost:27017, ready to accept connections.
       - name: Run tests
+        # This tells the test command to use the GitHub Secret
+        # we just created as the JWT_SECRET environment variable.
         run: npm test
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
