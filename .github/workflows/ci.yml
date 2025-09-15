@@ -1,59 +1,43 @@
-# This is the name of our workflow. It will appear in the "Actions" tab of your GitHub repository.
 name: Node.js CI
-
-# This section defines when the workflow should run.
 on:
-  # Run this workflow every time code is pushed to the 'main' branch.
   push:
     branches: [ "main" ]
-  # Also run it on every pull request that targets the 'main' branch.
   pull_request:
     branches: [ "main" ]
-
-# This section defines the "jobs" or tasks to be done. We only have one job here.
 jobs:
   build:
-    # This specifies the type of virtual machine to run the job on.
-    # 'ubuntu-latest' is a standard, reliable choice.
     runs-on: ubuntu-latest
+    # --- THIS IS THE NEW SECTION ---
+    # This block tells GitHub Actions to start up other Docker containers
+    # that our job can use.
+    services:
+      # We are defining a service named 'mongodb'.
+      mongodb:
+        # We tell it to use the official 'mongo' image from Docker Hub.
+        image: mongo:latest
+        # This maps the container's internal port 27017 to a port on the
+        # host machine, making it accessible to our tests.
+        ports:
+          - 27017:27017
 
     strategy:
-      # This defines different versions of Node.js to test against.
-      # For our project, we only need one version.
       matrix:
         node-version: [18.x]
 
-    # This section lists the individual steps the robot will take.
     steps:
-      # Step 1: Check out the code from the repository.
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Set up the specified version of Node.js.
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      # Step 3: Install all project dependencies.
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Run the automated tests.
-      # This is the most important step in the CI process.
-      # If this step fails, the entire pipeline will fail.
+      # Now, when this step runs, a MongoDB instance will be running
+      # at localhost:27017, ready to accept connections.
       - name: Run tests
         run: npm test
-
-
-
-
-
-
-
-
-
-
-
-    
