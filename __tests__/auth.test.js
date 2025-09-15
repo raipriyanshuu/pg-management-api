@@ -76,7 +76,7 @@ describe('Authentication API', () => {
         
         // Assert that the server rejected it
         expect(response.statusCode).toBe(400);
-        expect(response.body.message).toBe('A user with this email already exists');
+        expect(response.body.message).toBe('A user with this email already exists.');
     });
   });
 
