@@ -46,11 +46,6 @@ jobs:
       - name: Run tests
         run: npm test
 
-```bash
-git add .
-git commit -m "feat: Implement CI pipeline with GitHub Actions and Jest"
-git push origin main
-```
 
 
 
