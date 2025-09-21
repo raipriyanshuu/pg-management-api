@@ -5,9 +5,10 @@ const {
    getTenantById,
   updateTenant,
   deleteTenant,
+  uploadTenantDocument,
 } = require('../controllers/tenant.controller.js');
 const { protect } = require('../middleware/auth.middleware.js');
-
+const upload = require('../middleware/s3.middleware.js');
 
 // Import the payment router to maintain the nested structure
 const paymentRouter = require('./payment.routes.js');
@@ -29,5 +30,13 @@ router.route('/:tenantId')
    .get(protect, getTenantById) // <-- This is the new line you needed
   .put(protect, updateTenant)
   .delete(protect, deleteTenant);
+
+  router
+  .route('/:tenantId/upload-document')
+  .post(
+    protect, // 1. First, check if the user is logged in.
+    upload.single('document'), // 2. Second, run the upload middleware to send the file to S3.
+    uploadTenantDocument,
+  )
 
 module.exports = router;

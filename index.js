@@ -1,7 +1,14 @@
-const express = require('express');
+
 const dotenv = require('dotenv');
+// --- Step 1: Basic Setup ---
+dotenv.config();
+const express = require('express');
 const cors = require('cors');
 const connectDB = require('./db.js');
+
+
+
+
 
 // Import routes
 const authRoutes = require('./routes/auth.routes.js');
@@ -11,8 +18,10 @@ const dashboardRoutes = require('./routes/dashboard.routes.js');
 const expenseRoutes = require('./routes/expense.routes.js');
 
 
-// --- Step 1: Basic Setup ---
-dotenv.config();
+
+
+console.log('--- Checking Environment Variables ---');
+console.log('AWS Bucket Name from env:', process.env.AWS_S3_BUCKET_NAME);
 connectDB();
 const app = express();
 

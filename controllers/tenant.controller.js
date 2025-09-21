@@ -173,11 +173,52 @@ const deleteTenant = async (req, res) => {
     }
 };
 
+/* @desc    Upload a document for a specific tenant and save the URL
+ * @route   POST /api/properties/:propertyId/tenants/:tenantId/upload-document
+ * @access  Private
+ */
+const uploadTenantDocument = async (req, res) => {
+  try {
+    // Security Check 1: Ensure the property exists and belongs to the logged-in user.
+    const property = await Property.findById(req.params.propertyId);
+    if (!property || property.pgOwner.toString() !== req.user.pgOwner.toString()) {
+      return res.status(401).json({ message: 'Not authorized for this property' });
+    }
+
+    // Security Check 2: Ensure the tenant exists and belongs to that property.
+    const tenant = await Tenant.findById(req.params.tenantId);
+    if (!tenant || tenant.property.toString() !== req.params.propertyId) {
+      return res.status(404).json({ message: 'Tenant not found in this property' });
+    }
+
+    // Check if the upload middleware (multer-s3) actually uploaded a file.
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded.' });
+    }
+
+    // The 'upload' middleware has already sent the file to S3.
+    // The public URL is available on req.file.location.
+    // We just need to save this URL to our database.
+    tenant.documentUrl = req.file.location;
+    await tenant.save();
+
+    res.status(200).json({
+      message: 'File uploaded successfully!',
+      documentUrl: tenant.documentUrl,
+      tenant, // Send back the updated tenant object
+    });
+  } catch (error) {
+    console.error('File Upload Error:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
 
 module.exports = {
   addTenant,
   getTenantsForProperty,
   getTenantById,
   updateTenant,
-  deleteTenant
+  deleteTenant,
+  uploadTenantDocument,
 };

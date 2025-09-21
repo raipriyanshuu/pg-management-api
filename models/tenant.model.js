@@ -37,7 +37,11 @@ const tenantSchema = new mongoose.Schema(
       trim: true,
       // Not required, can be the same as mobile
     },
-    // --- The All-Important Links for Security and Organization ---
+    documentUrl: {
+      type: String,
+      default: '',
+    },
+  
     property: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
